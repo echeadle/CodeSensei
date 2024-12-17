@@ -1,16 +1,16 @@
-# Wrapper for OpenAI API integration.
-import openai
 import os
+from openai import OpenAI
 from dotenv import load_dotenv
 
 # Load environment variables from .env
 load_dotenv()
 
-# Get OpenAI API Key from the environment
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-if not openai.api_key:
+# Initialize OpenAI client with API key from .env
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
     raise ValueError("OpenAI API key not found. Please check your .env file.")
+
+client = OpenAI(api_key=api_key)
 
 def generate_code(prompt, model="gpt-4", max_tokens=200):
     """
@@ -25,13 +25,16 @@ def generate_code(prompt, model="gpt-4", max_tokens=200):
         str: Generated code as a string.
     """
     try:
-        response = openai.Completion.create(
+        response = client.chat.completions.create(
             model=model,
-            prompt=f"Write Python code for the following task:\n{prompt}",
+            messages=[
+                {"role": "system", "content": "You are a helpful coding assistant."},
+                {"role": "user", "content": f"Write Python code for the following task:\n{prompt}"}
+            ],
             max_tokens=max_tokens,
             temperature=0.5
         )
-        return response['choices'][0]['text'].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"
 
@@ -48,13 +51,16 @@ def explain_code(code, model="gpt-4", max_tokens=300):
         str: Explanation of the code.
     """
     try:
-        response = openai.Completion.create(
+        response = client.chat.completions.create(
             model=model,
-            prompt=f"Explain the following Python code in simple terms:\n{code}",
+            messages=[
+                {"role": "system", "content": "You are a Python programming expert who can explain code."},
+                {"role": "user", "content": f"Explain the following Python code:\n{code}"}
+            ],
             max_tokens=max_tokens,
             temperature=0.5
         )
-        return response['choices'][0]['text'].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"
 
@@ -71,13 +77,16 @@ def debug_code(code, model="gpt-4", max_tokens=300):
         str: Debugging suggestions or fixes for the code.
     """
     try:
-        response = openai.Completion.create(
+        response = client.chat.completions.create(
             model=model,
-            prompt=f"Identify errors in the following Python code and suggest fixes:\n{code}",
+            messages=[
+                {"role": "system", "content": "You are a Python expert who identifies errors in code and suggests fixes."},
+                {"role": "user", "content": f"Identify errors in the following Python code and suggest fixes:\n{code}"}
+            ],
             max_tokens=max_tokens,
             temperature=0.5
         )
-        return response['choices'][0]['text'].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"
 
@@ -94,12 +103,15 @@ def optimize_code(code, model="gpt-4", max_tokens=300):
         str: Optimized version or suggestions for improvements.
     """
     try:
-        response = openai.Completion.create(
+        response = client.chat.completions.create(
             model=model,
-            prompt=f"Optimize the following Python code for better performance or readability:\n{code}",
+            messages=[
+                {"role": "system", "content": "You are a Python expert who optimizes code for better performance and readability."},
+                {"role": "user", "content": f"Optimize the following Python code:\n{code}"}
+            ],
             max_tokens=max_tokens,
             temperature=0.5
         )
-        return response['choices'][0]['text'].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"

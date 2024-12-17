@@ -1,6 +1,7 @@
 import streamlit as st
+from openai_utils import generate_code, explain_code, debug_code, optimize_code
 
-# App title and header
+# Streamlit page config
 st.set_page_config(page_title="CodeSensei", layout="wide")
 st.title("👨‍🏫 CodeSensei")
 st.subheader("Your Python Coding Assistant")
@@ -18,8 +19,9 @@ with tab1:
     prompt = st.text_area("Enter your prompt for code generation:", placeholder="e.g., Write a function to calculate factorial.")
     if st.button("Generate Code"):
         if prompt.strip():
-            # Placeholder for OpenAI integration
-            st.code("# Your generated code will appear here.", language="python")
+            st.info("Generating code... Please wait.")
+            result = generate_code(prompt)
+            st.code(result, language="python")
         else:
             st.warning("Please enter a prompt.")
 
@@ -29,9 +31,10 @@ with tab2:
     code_to_explain = st.text_area("Paste your Python code here:", placeholder="e.g., def add(a, b): return a + b")
     if st.button("Explain Code"):
         if code_to_explain.strip():
-            # Placeholder for OpenAI integration
+            st.info("Explaining the code... Please wait.")
+            explanation = explain_code(code_to_explain)
             st.write("### Explanation:")
-            st.write("This is where the explanation will appear.")
+            st.write(explanation)
         else:
             st.warning("Please paste your Python code.")
 
@@ -41,9 +44,10 @@ with tab3:
     code_to_debug = st.text_area("Paste your Python code here:", placeholder="e.g., def divide(a, b): return a / b")
     if st.button("Debug Code"):
         if code_to_debug.strip():
-            # Placeholder for OpenAI integration
+            st.info("Analyzing code for errors... Please wait.")
+            debug_suggestions = debug_code(code_to_debug)
             st.write("### Debugging Suggestions:")
-            st.write("- Placeholder suggestion: Check for division by zero.")
+            st.write(debug_suggestions)
         else:
             st.warning("Please paste your Python code.")
 
@@ -53,9 +57,10 @@ with tab4:
     code_to_optimize = st.text_area("Paste your Python code here:", placeholder="e.g., for i in range(len(arr)): print(arr[i])")
     if st.button("Optimize Code"):
         if code_to_optimize.strip():
-            # Placeholder for OpenAI integration
+            st.info("Optimizing code... Please wait.")
+            optimization = optimize_code(code_to_optimize)
             st.write("### Optimization Suggestions:")
-            st.write("- Placeholder optimization: Use list comprehensions instead of loops.")
+            st.write(optimization)
         else:
             st.warning("Please paste your Python code.")
 

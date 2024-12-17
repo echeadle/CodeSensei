@@ -1,2 +1,3 @@
 # CodeSensei
-Home grown codeing AI application using Streamlit and openai
+
+Your Python coding assistant powered by Streamlit and OpenAI.

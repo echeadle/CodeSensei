@@ -1,19 +1,3 @@
-# CodeSensei
-
-This project was inspired by a Udemy course:
-
-### Build Python Programs with ChatGPT with Zero Coding Skills by Ardit Sulce.
-
-Currently this is an Minimum Viable Product (MVP).
-
-Your Python coding assistant powered by Streamlit and OpenAI.
-
-
-![alt text](./images/CodeSensei.png)
-
-
-I started with a prompt that aksed for a projecct plan. 
-Now I am working through the plan.
 
 # CodeSensei Project Plan
 
